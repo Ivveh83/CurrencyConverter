@@ -4,8 +4,6 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Locale.setDefault(Locale.US);
-
         /*
         TODO 1 Menu Display: The application should display a menu to the user with options to convert between
           different currencies or exit the program.
@@ -21,14 +19,15 @@ public class Main {
         Code Structure: The application should be well-structured using classes and methods for clarity and
         maintainability.
          */
+        Locale.setDefault(Locale.US);
 
         final int EXITNUMBER = 0;
         final int MAXINPUTNUMBER = 4;
         final int EXCEEDSMAXINPUTNUMBER = 5;
 
-        int userChoice = EXCEEDSMAXINPUTNUMBER;;
+        int userChoice = EXCEEDSMAXINPUTNUMBER;
         double amountToConvert = -1;
-        String convertedAmountMessage = "", formattedDateTimeMessage = "";
+        String convertedAmountMessage, formattedDateTimeMessage, displayMenu = "yes";
 
         Scanner scanner = new Scanner(System.in);
         CurrencyConverter currencyConverter = new CurrencyConverter();
@@ -40,6 +39,7 @@ public class Main {
                     System.out.print("Enter an amount: ");
                     try{
                         amountToConvert = scanner.nextDouble();
+                        scanner.nextLine();
                         if (amountToConvert > 0){
                             convertedAmountMessage = currencyConverter.convertCurrency(userChoice, amountToConvert);
                             formattedDateTimeMessage = DateTime.getDateAndTime();
@@ -49,38 +49,66 @@ public class Main {
                             %s
                             ***************************
                             """, formattedDateTimeMessage, convertedAmountMessage);
+                            amountToConvert = -1;
+                            userChoice = EXCEEDSMAXINPUTNUMBER;
+                            System.out.print("Show Display Menu? Type (yes/no): ");
+                            try {
+                                displayMenu = scanner.nextLine().toLowerCase();
+                            }catch (Exception e){
+                                System.out.println(e.getMessage());
+                            }
+                            break;
                         }else {
-                            System.out.println("Enter a non negative amount");
+                            System.out.println("""
+                        ***************************
+                        Enter a non negative amount
+                        ***************************""");
                         }
                     }catch (InputMismatchException e){
-                        System.out.println("Enter a valid amount");
+                        System.out.println("""
+                        ***************************
+                          Input must be of numbers
+                        ***************************""");
+                        scanner.nextLine();
                     }catch (Exception e){
                         System.out.println("Something went wrong");
-                    }finally {
                         scanner.nextLine();
                     }
                 }while (amountToConvert < 0);
                 userChoice = EXCEEDSMAXINPUTNUMBER;
-
             }else {
-                MenuDisplay.displayMenu();
+                if (displayMenu.equals("yes")){
+                    MenuDisplay.displayMenu();
+                    displayMenu = "no";
+                }
+                System.out.print("Enter number of choice: ");
                 try{
-                    System.out.print("Enter a Number of Choice: ");
                     userChoice = scanner.nextInt();
+                    if (userChoice >= EXCEEDSMAXINPUTNUMBER){
+                        System.out.println("""
+                ***************************
+                Enter a number from the –
+                menu display
+                ***************************""");
+                    }
                 }catch (InputMismatchException e){
-                    System.out.println("Enter a number from the Menu Display");
+                    System.out.println("""
+                ***************************
+                Enter a NUMBER from the –
+                menu display
+                ***************************""");
                 }catch (Exception e){
-                    System.out.println("Something went wrong");
+                    System.out.println("Something went wrong with Number of Choice");
                 }finally {
                     scanner.nextLine();
                 }
             }
         }while (userChoice != EXITNUMBER);
-        System.out.println("Exiting Currency Converter");
+        System.out.println("""
+        
+        ***************************
+               Welcome back!
+        ***************************""");
         scanner.close();
-
-
-
-
     }
 }

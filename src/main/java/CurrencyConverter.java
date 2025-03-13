@@ -33,7 +33,7 @@ class CurrencyConverter {
                 return String.format("%s%.2f = %s%.2f", euroSign, amountToChange, sekSign, result);
             }
         }
-        return "Something went wrong";
+        return "Something went wrong with Currency Converting";
     }
 
 }
