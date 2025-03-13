@@ -43,12 +43,7 @@ public class Main {
                         if (amountToConvert > 0){
                             convertedAmountMessage = currencyConverter.convertCurrency(userChoice, amountToConvert);
                             formattedDateTimeMessage = DateTime.getDateAndTime();
-                            System.out.printf("""
-                            ***************************
-                            %s
-                            %s
-                            ***************************
-                            """, formattedDateTimeMessage, convertedAmountMessage);
+                            Display.displayResult(formattedDateTimeMessage, convertedAmountMessage);
                             amountToConvert = -1;
                             userChoice = EXCEEDSMAXINPUTNUMBER;
                             System.out.print("Show Display Menu? Type (yes/no): ");
@@ -59,16 +54,10 @@ public class Main {
                             }
                             break;
                         }else {
-                            System.out.println("""
-                        ***************************
-                        Enter a non negative amount
-                        ***************************""");
+                            Display.displayError(1);
                         }
                     }catch (InputMismatchException e){
-                        System.out.println("""
-                        ***************************
-                          Input must be of numbers
-                        ***************************""");
+                        Display.displayError(2);
                         scanner.nextLine();
                     }catch (Exception e){
                         System.out.println("Something went wrong");
@@ -78,25 +67,17 @@ public class Main {
                 userChoice = EXCEEDSMAXINPUTNUMBER;
             }else {
                 if (displayMenu.equals("yes")){
-                    MenuDisplay.displayMenu();
+                    Display.displayMenu();
                     displayMenu = "no";
                 }
                 System.out.print("Enter number of choice: ");
                 try{
                     userChoice = scanner.nextInt();
                     if (userChoice >= EXCEEDSMAXINPUTNUMBER){
-                        System.out.println("""
-                ***************************
-                Enter a number from the –
-                menu display
-                ***************************""");
+                        Display.displayError(3);
                     }
                 }catch (InputMismatchException e){
-                    System.out.println("""
-                ***************************
-                Enter a NUMBER from the –
-                menu display
-                ***************************""");
+                    Display.displayError(4);
                 }catch (Exception e){
                     System.out.println("Something went wrong with Number of Choice");
                 }finally {
@@ -104,11 +85,7 @@ public class Main {
                 }
             }
         }while (userChoice != EXITNUMBER);
-        System.out.println("""
-        
-        ***************************
-               Welcome back!
-        ***************************""");
+        Display.displayGoodBye();
         scanner.close();
     }
 }
